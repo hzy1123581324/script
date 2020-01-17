@@ -149,7 +149,10 @@ const methods = {
 			}
 		})
 	},
-	getquery(element) { //获取节点
+	/*
+	获取节点信息
+	*/
+	getquery(element) { 
 		let self = this;
 		let query = uni.createSelectorQuery();
 		query.select(element).boundingClientRect();
@@ -198,6 +201,18 @@ const methods = {
 			})
 		})
 	},
+	
+	/*
+	————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+	*****************************************************************************数据处理*************************************************************
+	————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+	*/
+   
+  
+	
+	/*
+	
+	*/
 	del_one(e) { //删除数组某一项
 		let {
 			index,
@@ -624,7 +639,8 @@ const methods = {
 				}
 			}
 			//最后返回左边和右边的数组，并对其做相同操作，直到递归完成
-			return quickSort(left).concat(center).concat(quickSort(right));
+			// return quickSort(left).concat(center).concat(quickSort(right));
+			return [...quickSort(left),...quickSort(center),...quickSort(right)]
 		}
 	},
 
