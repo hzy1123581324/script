@@ -9,12 +9,8 @@ const common = {
 			num: 1, //常用于商品数量
 			page: 1, //分页页数
 			timer: '', //接收定时器id
-			// #ifdef H5
-			Route:this.route,//当前页面路径
-			// #endif
-			// #ifndef H5
-			Route: this.__route__,//当前页面路径
-			// #endif
+			Route: '',//当前页面路径
+		
 		}
 	},
 
@@ -41,7 +37,12 @@ const common = {
 	监听页面初次渲染完成。注意如果渲染速度快，会在页面进入动画完成前触发
 	*/
 	onReady(){
-		
+		// #ifdef H5
+		this.Route = this.route;//当前页面路径
+		// #endif
+		// #ifndef H5
+		this.Route = this.__route__;//当前页面路径
+		// #endif
 	},
 	/*
 	onHide	

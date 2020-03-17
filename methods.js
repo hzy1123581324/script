@@ -7,7 +7,31 @@ const methods = {
 		console.log(this.$store, '*********store***************');
 		this.$store.commit('changeLang', lang);
 	},
-
+	// /*
+	
+	// */
+	// geti18ndata(route){
+	// 	console.log(this.$store.getters.getLangLocale, '**************************locale');
+	// 	console.log(this,'****************************');
+	// 	const locale = this.$store.getters.getLangLocale;
+	// 	const common_lang = language[locale].common;
+	// 	// let now_lang = 
+	// 	let temporary = language[locale]||{};
+	// 	let route = route|| this.Route ;
+	// 	//获取路由地址
+	// 	const route_list = route.split('/');
+	// 	console.log(route_list,'******************************')
+	// 	for (let i = 1; i < route_list.length; i++) {
+	// 		console.log(route_list[i]);
+	// 		temporary = temporary[route_list[i]]||{};
+	// 	}
+	// 	console.log(temporary,common_lang,'&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&');
+	// 	return Object.assign(common_lang );
+	// },
+	
+	/*
+	提示弹框
+	*/
 	toast(title, callback = () => {}) {
 		uni.showToast({
 			title,
