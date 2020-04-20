@@ -8,6 +8,7 @@ class Regular {
 		/*手机号正则*/
 		this.phone = /^1[34578]\d{9}$/;
 		this.pwd6_16 = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/
+		this.id_number = 
 		
 	}
 	
