@@ -17,7 +17,7 @@ const LifeCycle = {
 				if(this.onshow){
 					this.onshow();
 				}else{
-					console.log('onshow未定义')
+					console.log('onshow未定义+++++++')
 				}
 				
 			}else{
