@@ -17,13 +17,13 @@ const computed = {
 				temporary = {}
 			}else{
 				for (let i = 1; i < route_list.length; i++) {
-					console.log(route_list[i]);
+					// console.log(route_list[i]);
 					temporary = temporary[route_list[i]]||{};
-					console.log(route_list[i],temporary);
+					// console.log(route_list[i],temporary);
 				}
 			}
 			// console.log(temporary,common_lang,'&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&');
-			return Object.assign(temporary,common_lang );
+			return Object.assign(common_lang,temporary, );
 		},
 }
 
