@@ -1,14 +1,119 @@
+import {
+	http
+} from './http.js';
 const methods = {
+
+	__init__() {},
+
+	/******************************精准运算*************************************/
 	
-	__init__() {
+	//加法函数，用来得到精确的加法结果
+	//说明：javascript的加法结果会有误差，在两个浮点数相加的时候会比较明显。这个函数返回较为精确的加法结果。
+	//调用：$h.Add(arg1,arg2)
+	//返回值：arg1加上arg2的精确结果
+	Add: function(arg1, arg2) {
+		arg2 = parseFloat(arg2);
+		var r1, r2, m;
+
+		try {
+			r1 = arg1.toString().split(".")[1].length;
+		} catch (e) {
+			r1 = 0;
+		}
+
+		try {
+			r2 = arg2.toString().split(".")[1].length;
+		} catch (e) {
+			r2 = 0;
+		}
+
+		m = Math.pow(100, Math.max(r1, r2));
+		return (this.Mul(arg1, m) + this.Mul(arg2, m)) / m;
 	},
+	//减法函数，用来得到精确的减法结果
+	//说明：javascript的加法结果会有误差，在两个浮点数相加的时候会比较明显。这个函数返回较为精确的减法结果。
+	//调用：$h.Sub(arg1,arg2)
+	//返回值：arg1减去arg2的精确结果
+	Sub: function(arg1, arg2) {
+		arg1 = parseFloat(arg1);
+		arg2 = parseFloat(arg2);
+		var r1, r2, m, n;
+
+		try {
+			r1 = arg1.toString().split(".")[1].length;
+		} catch (e) {
+			r1 = 0;
+		}
+
+		try {
+			r2 = arg2.toString().split(".")[1].length;
+		} catch (e) {
+			r2 = 0;
+		}
+
+		m = Math.pow(10, Math.max(r1, r2)); //动态控制精度长度
+
+		n = r1 >= r2 ? r1 : r2;
+		return ((this.Mul(arg1, m) - this.Mul(arg2, m)) / m).toFixed(n);
+	},
+	/*乘法函数，用来得到精确的乘法结果
+	**说明：javascript的乘法结果会有误差，在两个浮点数相乘的时候会比较明显。这个函数返回较为精确的乘法结果。
+	**调用：$h.Mul(arg1,arg2)
+	**返回值：arg1乘以arg2的精确结果
+	*/
+	Mul: function(arg1, arg2) {
+		arg1 = parseFloat(arg1);
+		arg2 = parseFloat(arg2);
+		var m = 0,
+			s1 = arg1.toString(),
+			s2 = arg2.toString();
+
+		try {
+			m += s1.split(".")[1].length;
+		} catch (e) {}
+
+		try {
+			m += s2.split(".")[1].length;
+		} catch (e) {}
+
+		return Number(s1.replace(".", "")) * Number(s2.replace(".", "")) / Math.pow(10, m);
+	},
+	/*
+	*除法函数，用来得到精确的除法结果
+	*说明：javascript的除法结果会有误差，在两个浮点数相除的时候会比较明显。这个函数返回较为精确的除法结果。
+	*调用：$h.Div(arg1,arg2)
+	*返回值：arg1除以arg2的精确结果
+	*/
+	Div: function(arg1, arg2) {
+		arg1 = parseFloat(arg1);
+		arg2 = parseFloat(arg2);
+		var t1 = 0,
+			t2 = 0,
+			r1,
+			r2;
+
+		try {
+			t1 = arg1.toString().split(".")[1].length;
+		} catch (e) {}
+
+		try {
+			t2 = arg2.toString().split(".")[1].length;
+		} catch (e) {}
+
+		r1 = Number(arg1.toString().replace(".", ""));
+		r2 = Number(arg2.toString().replace(".", ""));
+		return r1 / r2 * Math.pow(10, t2 - t1);
+	},
+
+	/*******************************运算end************************************/
+	http: http,
 	//转变语言
 	changeLang(lang = 'zh-CN') {
 		console.log(this.$store, '*********store***************');
 		this.$store.commit('changeLang', lang);
 	},
 	// /*
-	
+
 	// */
 	// geti18ndata(route){
 	// 	console.log(this.$store.getters.getLangLocale, '**************************locale');
@@ -28,7 +133,7 @@ const methods = {
 	// 	console.log(temporary,common_lang,'&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&');
 	// 	return Object.assign(common_lang );
 	// },
-	
+
 	/*
 	提示弹框
 	*/
@@ -40,22 +145,36 @@ const methods = {
 		})
 	},
 
-	
+	/**
+	 * 数字转中文
+	 * 
+	 */
+	Rp: function(n) {
+		var cnum = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九'];
+		var s = '';
+		n = '' + n; // 数字转为字符串
+
+		for (var i = 0; i < n.length; i++) {
+			s += cnum[parseInt(n.charAt(i))];
+		}
+
+		return s;
+	},
 	/*
 	拨打电话
 	*/
 	call(phoneNumber) { //
 		uni.makePhoneCall({
-			phoneNumber:phoneNumber.toString(), //仅为示例，并非真实的电话号码
+			phoneNumber: phoneNumber.toString(), //仅为示例，并非真实的电话号码
 		})
 	},
 
 
 	jump({
-			url,
-			open = "navigateTo",
-			callback
-		}) { //跳转
+		url,
+		open = "navigateTo",
+		callback
+	}) { //跳转
 
 		// console.log(open,'0000000000000000000000000000000')
 		// open可取navigateTo，redirectTo,reLaunch,switchTab
@@ -73,7 +192,7 @@ const methods = {
 		})
 	},
 	/*
-	*/
+	 */
 	page_back(key) { //返回上一页，并返回数据
 		const self = this;
 		const pages = getCurrentPages();
@@ -176,7 +295,7 @@ const methods = {
 	/*
 	获取节点信息
 	*/
-	getquery(element) { 
+	getquery(element) {
 		let self = this;
 		let query = uni.createSelectorQuery();
 		query.select(element).boundingClientRect();
@@ -225,15 +344,15 @@ const methods = {
 			})
 		})
 	},
-	
+
 	/*
 	————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 	*****************************************************************************数据处理*************************************************************
 	————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 	*/
-   
-  
-	
+
+
+
 	/*
 	
 	*/
@@ -664,7 +783,7 @@ const methods = {
 			}
 			//最后返回左边和右边的数组，并对其做相同操作，直到递归完成
 			// return quickSort(left).concat(center).concat(quickSort(right));
-			return [...quickSort(left),...quickSort(center),...quickSort(right)]
+			return [...quickSort(left), ...quickSort(center), ...quickSort(right)]
 		}
 	},
 

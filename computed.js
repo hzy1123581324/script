@@ -1,5 +1,8 @@
 import language from '../../Language/main.js';
 const computed = {
+		/*
+		多语言计算器
+		*/ 
 		i18n() {
 			// console.log(this.$store.getters.getLangLocale, '**************************locale');
 			// console.log(this,'****************************');

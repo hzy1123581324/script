@@ -1,9 +1,8 @@
-import urlConfig from './config.js'
+import urlConfig from './config.js';
 
-const net = {}
-const headers = {}
+const headers = {};
     
-net.ajax = (url, data, method, power) => {
+ const http = (url, data, method, power) => {
 /*     权限判断 因为有的接口请求头可能需要添加的参数不一样，所以这里做了区分
 == 不通过access_token校验的接口
 == 文件下载接口列表
@@ -68,4 +67,4 @@ net.ajax = (url, data, method, power) => {
 　　})
  } 
 
-export default net
+export default {http}
