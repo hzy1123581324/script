@@ -12,7 +12,7 @@ const computed = {
 			// let now_lang = 
 			let temporary = language[locale];
 			// console.log(this,'&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&');
-			const route_list = (this.$mp&&this.$mp.page.route||'').split('/');
+			const route_list = (this.Route||this.$mp&&this.$mp.page.route||'').split('/');
 			// console.log(this.Route,route_list,'哈哈哈哈哈哈哈');
 			if(route_list.length==1){
 				temporary = {}
