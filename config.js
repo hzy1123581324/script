@@ -1,7 +1,8 @@
 let url_config = "" 
 if(process.env.NODE_ENV === 'development'){ 
     // 开发环境
-	 url_config = 'https://192.168.2.201:42443'
+	 url_config = 'https://192.168.2.102:19443'
+	 // url_config = 'https://app-api.coinemp.vip'
 }
 
 else{

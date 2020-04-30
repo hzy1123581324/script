@@ -1,6 +1,7 @@
 import filters from './filters.js';
 import methods from './methods.js';
 import computed from './computed.js';
+import watch from './watch.js';
 const debug = true;
 
 const common = {
@@ -138,12 +139,7 @@ const common = {
 	/*
 	-----------------------------------生命周期结束---------------------------------------------
 	*/
-	watch: {
-		//监听页数变化
-		page(newval, oldval) {
-			// do something
-		}
-	},
+	watch,
 	filters,
 	computed,
 	methods,
