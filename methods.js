@@ -460,27 +460,7 @@ const methods = {
 		})
 		this.callback(callback, e);
 	},
-	copy(data) { //复制到粘贴板
 
-		//console.log(value);
-		uni.setClipboardData({
-			data: data.toString(),
-			success: (res) => {
-				uni.showToast({
-					title: this.i18n.copySuccess, //复制成功
-					icon: 'none',
-				})
-			}
-		})
-
-	},
-	get_copy(key) { //获取粘贴板的内容
-		uni.getClipboardData({
-			success: (res) => {
-				this[key] = res.data;
-			}
-		})
-	},
 	get_addr(e) { //获取系统收货地址
 		let this_ = this;
 		let {

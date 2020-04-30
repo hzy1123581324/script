@@ -59,7 +59,7 @@ class Regular {
 		  return true;
 	  }else{
 		  return ismsg&&uni.uni.showToast({
-		  	title: this.i18n.validation.phoneErr
+		  	title: this.i18n.$validation.phoneErr
 		  });
 	  }
    }

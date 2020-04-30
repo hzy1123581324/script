@@ -37,7 +37,7 @@ const FormValidation = {
  			} else {
  				this.$set(this, pwd, '');
  			}
- 			return this.toast(msg || this.i18n.validation.pwdunlike)
+ 			return this.toast(msg || this.i18n.$validation.pwdunlike)
  		}
  	},
 
@@ -51,11 +51,11 @@ const FormValidation = {
  		let $pwd = this.$getEachVal(pwd);
  		
  		if (!$pwd) {
- 			return this.toast(this.i18n.validation.pwd_into);
+ 			return this.toast(this.i18n.$validation.pwd_into);
  		}
 		
 		if (!/\w{6,20}/.test($pwd)){
-			return this.toast(this.i18n.validation.pwdErr);
+			return this.toast(this.i18n.$validation.pwdErr);
 		}
 		return true;
  	
@@ -71,11 +71,11 @@ const FormValidation = {
 
  		let $email = this.$getEachVal(email);
  		if (!$email) {
- 			return this.toast(this.i18n.validation.email_into);
+ 			return this.toast(this.i18n.$validation.email_into);
  		}
 
  		if (!/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test($email)) {
- 			return this.toast(this.i18n.validation.emailErr);
+ 			return this.toast(this.i18n.$validation.emailErr);
  		}
 		return true;
  	},
@@ -90,11 +90,11 @@ const FormValidation = {
  	checkPhone(phone = "param.phone", ) {
 		let $phone = this.$getEachVal(phone);
  		if (!$phone) {
- 			return this.toast(this.i18n.validation.phone_into);
+ 			return this.toast(this.i18n.$validation.phone_into);
  		}
 		// console.log(!/^1[34578]\d{9}$/.test($phone),'手机验证++++++++++++++++++')
  		if (!/^1[34578]\d{9}$/.test($phone)) {
- 			return this.toast(this.i18n.validation.phoneErr);
+ 			return this.toast(this.i18n.$validation.phoneErr);
  		}
 		return true;
  	},
@@ -108,11 +108,11 @@ const FormValidation = {
 	checkPayPwd(payPwd = "param.payPwd",){
 		let $payPwd = this.$getEachVal(payPwd);
 		if (!$payPwd) {
-			return this.toast(this.i18n.validation.payPwd_into);
+			return this.toast(this.i18n.$validation.payPwd_into);
 		}
 		// console.log(!/^1[34578]\d{9}$/.test($phone),'手机验证++++++++++++++++++')
 		if (!/^\d{6}$/.test($payPwd)) {
-			return this.toast(this.i18n.validation.payPwd_into);
+			return this.toast(this.i18n.$validation.payPwd_into);
 		}
 		return true;
 	},
