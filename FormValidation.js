@@ -117,8 +117,16 @@ const FormValidation = {
 		return true;
 	},
 	
-	
-	
+	/*
+	* 检查身份证是否合法
+	*/
+   checkIDCard(IDcard='param.id_card'){
+	   let $IDcard = this.$getEachVal(phone);
+	   	if (!/^\d{8,18}|[0-9x]{8,18}|[0-9X]{8,18}?$/.test($IDcard)) {
+	   		return this.toast(this.i18n.$validation.into_id_number);
+	   	}
+	   	return true;
+	},
 	
 	$getEachVal(key){
 		let List = key.split('.');

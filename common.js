@@ -9,6 +9,8 @@ const common = {
 		return {
 			num: 1, //常用于商品数量
 			page: 1, //分页页数
+			limit: '16',
+			hasmore: true,
 			timer: '', //接收定时器id
 			Route: '',//当前页面路径
 		

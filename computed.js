@@ -6,6 +6,7 @@ const computed = {
 		i18n() {
 			// console.log(this.$store.getters.getLangLocale, '**************************locale');
 			// console.log(this,'****************************');
+			let {$$langRoute} = this;//手动指定 三种情况，空字符串，路由地址字符串，路由地址一维数组
 			const locale = this.$store.getters.getLangLocale;
 			let langData = {};
 			const common_lang = language[locale].common;
