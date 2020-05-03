@@ -44,7 +44,7 @@ const http = (url, data, method="POST", power) => {
 			mask: true
 		});
 	}
-	// console.log(data,headers,'这是参数————————————————————————————————————————————————————')
+	console.log(urlConfig + url,data,headers,'这是参数————————————————————————————————————————————————————')
 	return uni.request({
 		url: urlConfig + url,
 		method,
@@ -71,7 +71,7 @@ const http = (url, data, method="POST", power) => {
 			throw res[1].data.msg;
 		}
 	}).catch(res => {
-		// console.log(res,'*********************************')
+		console.log(res,'err*********************************err')
 		if (res) {
 			uni.showToast({
 				title: res,
