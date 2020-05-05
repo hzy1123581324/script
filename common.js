@@ -13,7 +13,7 @@ const common = {
 			hasmore: true,
 			timer: '', //接收定时器id
 			Route: '',//当前页面路径
-		
+			account: '',//账户
 		}
 	},
 
@@ -137,6 +137,11 @@ const common = {
 	*/
 	onNavigationBarSearchInputClicked(){
 		
+	},
+	mounted(){
+		let userinfo = JSON.parse(uni.getStorageSync('userinfo'));
+		// console.log(userinfo,'**************')
+		this.account = userinfo.account;
 	},
 	/*
 	-----------------------------------生命周期结束---------------------------------------------
