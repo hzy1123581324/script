@@ -20,7 +20,7 @@ const http = (url, data, method="POST", power) => {
 	headers['content-type'] = 'application/json';
 	headers['request-time'] = new Date().getTime();
 	headers['x-auth-token'] = token;
-	headers['lang'] = store.getters.getLangLocale.toLowerCase();
+	headers['lang'] = store.getters.getLangLocale;
 	
 	// headers["Access-Control-Request-Headers"] = method;
 	// headers["Access-Control-Allow-Origin"] = method;

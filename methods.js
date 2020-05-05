@@ -385,11 +385,6 @@ const methods = {
 		//空函数
 		return
 	},
-	
-	//或者使用for循环
-	sleep(delay) {
-	    for(var t = Date.now(); Date.now() - t <= d;);
-	},
 	//********操作数据*********操作数据*************操作数据****************
 	rep_str(str, n, m) { //n=3，m=4，130****1234123
 		//替换中间字符

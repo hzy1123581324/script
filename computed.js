@@ -29,10 +29,6 @@ const computed = {
 			// console.log(lang,common_lang,'这是合成的' )
 			return Object.assign(langData,common_lang,temporary, );
 		},
-		
-		account_txt(){
-			return this.rep_str(this.account||'');
-		},
 }
 
 export default computed;
