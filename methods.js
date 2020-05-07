@@ -6,12 +6,12 @@ import FormValidation from './FormValidation.js';
 import Regular from './regular.js';
 const regular = new Regular();
 import Http from './http.js';
-console.log(sysAPI,'444444444444444444444444444444444444444');
+// console.log(sysAPI, '444444444444444444444444444444444444444');
 const methods = {
 
 	__init__() {},
 
-	
+
 	// http: http,
 	//转变语言
 	changeLang(lang = 'zh-CN') {
@@ -46,7 +46,7 @@ const methods = {
 
 		return s;
 	},
-	
+
 	modal(e) { //modal专用
 		let {
 			callback
@@ -364,7 +364,7 @@ const methods = {
 		})
 		this.callback(callback, e)
 	},
-	
+
 	form_push: function(e) { //模板消息专用
 		let {
 			formId: formid
@@ -389,6 +389,16 @@ const methods = {
 	rep_str(str, n, m) { //n=3，m=4，130****1234123
 		//替换中间字符
 		return str.replace(/^(\d{3})\d*(\d{4})$/, "$1****$2");
+	},
+	loginOut() {
+		uni.clearStorageSync();
+		uni.setStorageSync('first', true);
+		setTimeout(() => {
+			uni.reLaunch({
+				url: '/pages/login/login'
+			})
+		}, 1500)
+
 	},
 	quickSort(arr) { //快速排序
 		//如果数组的个数小于等于1，就返回该数组
@@ -416,7 +426,78 @@ const methods = {
 		}
 	},
 
-}
-Object.assign(methods,sysAPI,FormValidation);
+	/*
+	 *热更新
+	 */
+	contrast: function(res) {
+		if (res == '') {
+			return false;
+		}
+		let _this = this;
+		let ismust = false;
+		let hasnew = false;
+		let version = '';
+		if (res.data.isUpdateApp == 1) {
+			plus.runtime.getProperty(plus.runtime.appid, function(wgtinfo) {
+				version = wgtinfo.version;
+				uni.setStorageSync('app_versions', version);
+				if (plus.os.name === 'iOS') {
+					if (res.data.ios.version !== version && res.data.ios.must_update == 1) {
+						ismust = true;
+						hasnew = true;
+					} else if (res.data.ios.version !== version && res.data.ios.must_update == 0) {
+						hasnew = true;
+						_this.ismust_one = false;
+					}
+				} else {
+					if (res.data.android.version !== version && res.data.android.must_update == 1) {
+						ismust = true;
+						hasnew = true;
+					} else if (res.data.android.version !== version && res.data.android.must_update == 0) {
+						hasnew = true;
+						_this.ismust_one = false;
+					}
+				}
+				let openUrl = res.data.download_url;
+				let openUrlA = res.data.android.download_url;
+				let openUrlI = res.data.ios.download_url;
+				let info = {
+					appWgtSize: res.data.appWgtSize,
+					openUrl: res.data.download_url,
+					openUrlI: res.data.android.download_url,
+					openUrlI: res.data.ios.download_url,
+					updatStatus: 1,
+					ismust: ismust
+				};
+				if (hasnew) {
+					console.log(hasnew, '##################################')
+					uni.setStorageSync('appUpdateInfo', info);
+				} else {
+					info.updatStatus = 0;
+					uni.setStorageSync('appUpdateInfo', info);
+				}
+			});
 
+
+
+		} else {
+			let info = {
+				updatStatus: 0
+			};
+			uni.setStorageSync('appUpdateInfo', info);
+		}
+	},
+
+	async getAppVersionsInfo() {
+		//#ifdef APP-PLUS
+		const result = await this.$net.ajax('/app_versions', {}, 'post');
+		console.log(result, '5555555555555555555555555555555')
+		if (result.code == 200) {
+			this.contrast(result);
+		}
+		//#endif
+	}
+}
+Object.assign(methods, sysAPI, FormValidation);
+// console.log(methods,'******************++++++++++++++++++++++');
 export default methods;

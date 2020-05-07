@@ -20,7 +20,7 @@ const http = (url, data, method="POST", power) => {
 	headers['content-type'] = 'application/json';
 	headers['request-time'] = new Date().getTime();
 	headers['x-auth-token'] = token;
-	headers['lang'] = store.getters.getLangLocale;
+	headers['lang'] = store.getters.getLangLocale.toLowerCase();
 	
 	// headers["Access-Control-Request-Headers"] = method;
 	// headers["Access-Control-Allow-Origin"] = method;
@@ -44,7 +44,7 @@ const http = (url, data, method="POST", power) => {
 			mask: true
 		});
 	}
-	console.log(urlConfig + url,data,headers,'这是参数————————————————————————————————————————————————————')
+	// console.log(urlConfig + url,data,headers,'这是参数————————————————————————————————————————————————————')
 	return uni.request({
 		url: urlConfig + url,
 		method,
@@ -52,7 +52,7 @@ const http = (url, data, method="POST", power) => {
 		dataType: 'json',
 		header: headers
 	}).then(res => {
-		console.log(res,'这是返回的数据');
+		// console.log(res,'这是返回的数据');
 		if (data.loading) {
 			uni.hideLoading();
 		}
@@ -68,10 +68,10 @@ const http = (url, data, method="POST", power) => {
 				url: '/pages/index/index'
 			})
 		} else {
-			throw res[1].data.msg;
+			throw res[1].data&&res[1].data.msg||'';
 		}
 	}).catch(res => {
-		console.log(res,'err*********************************err')
+		// console.log(res,'err*********************************err')
 		if (res) {
 			uni.showToast({
 				title: res,

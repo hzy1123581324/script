@@ -1,8 +1,10 @@
+import url_config from './config.js';
+
 const sysAPI = {
-		
+
 	/***************************uni-app自带****************************/
-	
-	
+
+
 	/*
 	提示弹框
 	*/
@@ -13,23 +15,23 @@ const sysAPI = {
 			success: callback
 		})
 	},
-	
-	copy(data,msg) { //复制到粘贴板
-	
+
+	copy(data, msg) { //复制到粘贴板
+
 		//console.log(value);
 		uni.setClipboardData({
 			data: data.toString(),
 			success: (res) => {
-				if(msg != 'none'){
-				
-					this.toast(msg||this.i18n.copySuccess, //复制成功
-						)
-				}else{
+				if (msg != 'none') {
+
+					this.toast(msg || this.i18n.copySuccess, //复制成功
+					)
+				} else {
 					uni.hideToast();
 				}
 			}
 		})
-	
+
 	},
 	get_copy(key) { //获取粘贴板的内容
 		uni.getClipboardData({
@@ -38,13 +40,13 @@ const sysAPI = {
 			}
 		})
 	},
-	
+
 	jump({
 		url,
 		open = "navigateTo",
 		callback
 	}) { //跳转
-	
+
 		// console.log(open,'0000000000000000000000000000000')
 		// open可取navigateTo，redirectTo,reLaunch,switchTab
 		uni[open]({
@@ -111,24 +113,18 @@ const sysAPI = {
 		}
 	},
 	get_auth() { //获取权限
-	
+
 	},
 	get_system() {
 		uni.getSystemInfo({
 			success(ret) {
-	
+
 			}
 		})
 	},
-	saveImage(e) {
-		uni.saveImageToPhotosAlbum({
-			success(res) {
-	
-			}
-		})
-	},
+
 	previewImage(imgs) { //预览图片
-	
+
 		if (typeof(imgs) == 'string') {
 			imgs = [imgs];
 		}
@@ -183,81 +179,91 @@ const sysAPI = {
 			phoneNumber: phoneNumber.toString(), //仅为示例，并非真实的电话号码
 		})
 	},
-	
+
 	set_title(title) { //动态设置当前页面标题
 		uni.setNavigationBarTitle({
 			title
 		})
 	},
 	get_network() {},
-	sel_img({
-		count = 1,
-		sizeType = ['compressed'],
-		sourceType = ['camera', 'album', ]
-	} = {}) {
+	selimg(param = {}) {
 		const [self] = [this];
 		return new Promise((resolve, reject) => {
-			uni.chooseImage({
-				count, // 默认1
-				sizeType, // 可以指定是原图还是压缩图，默认二者都有
-				sourceType, // 可以指定来源是相册还是相机，默认二者都有
-				success: function(res) {
-					// console.log(res.tempFiles)
+			param = Object.assign({
+				count: 1, // 默认1
+				sizeType: ['compressed'], // 可以指定是原图还是压缩图，默认二者都有
+				sourceType: ['camera', 'album', ], // 可以指定来源是相册还是相机，默认二者都有
+				success: res => {
+					console.log(res.tempFiles)
 					resolve(res.tempFiles);
 				},
-				fail: function(err) {
+				fail: err => {
 					reject(err);
 				}
-			})
+			}, param);
+			uni.chooseImage(param)
 		})
 	},
-	uploadFile({
-		filePath_index,
-		data,
-		name = 'file',
-		form_data = {
-			'user': 'test'
-		}
-	} = {}) {
+	uploadFile(param = {}) {
 		const [self] = [this];
 		return new Promise((resolve, reject) => {
-			// console.log('上传的临时文件++++++++++++++++++++++++',filePath);
-			uni.uploadFile({
-				url: `https://${config.host}/SimpleFramework/fileUpload.php`, //仅为示例，非真实的接口地址
-				filePath: data[filePath_index || 0].path, //文件临时路径
-				header: {
-					'content-type': 'multipart/form-data'
-				},
-				name,
-				formData: form_data,
-				success: function(res) {
-					// console.log('-----======上传后的结果data----==-=-=-=--', res.data);
-					let obj = JSON.parse(res.data);
-					//console.log('-----======上传后的结果----==-=-=-=--', res);
-					resolve(obj.npara)
-					//do something
-				},
-				fail: function(err) {
-					reject(err);
-				}
-			})
-		})
-	
+
+			param = Object.assign(
+
+				{
+					url: `${url_config}/member/up/upload`, //仅为示例，非真实的接口地址
+					header: {
+						'x-auth-token': uni.getStorageSync('token'),
+						'app-version': 100
+					},
+					filePath: param.filePath, //文件临时路径
+					name: 'file',
+					form_data: {
+						'name': 'file'
+					},
+
+					success: (res) => {
+						// console.log('-----======上传后的结果data----==-=-=-=--', res.data);
+						let obj = JSON.parse(res.data);
+						console.log('-----======上传后的结果----==-=-=-=--', obj.npara);
+						resolve(obj.npara)
+						this[param.keyName] = obj.npara;
+						//do something
+					},
+					fail: (err) => {
+						reject(err);
+					}
+				}, param);
+			uni.uploadFile(param);
+		});
+
 	},
-	upload_img(e = {}) { //选择并上传图片
-		let {
-			form_data,
-			callback
-		} = e.currentTarget.dataset;
-		return this.sel_img({}).then((data) => {
+	uploadImg(param = {}) { //选择并上传图片
+		const [self] = [this];
+		const count = 1;
+		if (param.keyNames && param.keyNames.length && typeof(param) == "object") {
+			count = param.keyNames.length;
+		}
+		return this.selimg({
+				count
+			}).then((data) => {
+				param = Object.assign({
+					form_data: {
+						'name': 'file'
+					}
+				}, param);
+				console.log(data[0], '*****图片返回支付****');
 				let promises = [];
 				for (let i = 0; i < data.length; i++) {
+					const keyName = param.keynames && param.keynames[i] || param.keyName;
+					this[keyName] = data[i].path;
 					promises.push(
 						this.uploadFile({
 							filePath_index: i,
-							data,
-							name: 'img',
-							formData: form_data
+							filePath: data[i].path,
+							name: 'file',
+							formData: param.form_data,
+							keyName
 						})
 					)
 				}
@@ -265,7 +271,7 @@ const sysAPI = {
 				return Promise.all(promises)
 			})
 			.catch((err) => {
-				//console.log(err)
+				console.log(err, '（（（（（（（（（（（（（（')
 			})
 	},
 	callback(callback, e) {
@@ -277,7 +283,91 @@ const sysAPI = {
 			return [callback](e)
 		}
 	},
-	
+
+	saveimg(src) {
+		const self = this;
+
+		uni.getSetting({
+			success(res) {
+				if (!res.authSetting['scope.writePhotosAlbum']) {
+					uni.authorize({
+						scope: 'scope.writePhotosAlbum',
+						success() {
+							self.save_img(src);
+						}
+					})
+				} else {
+					self.save_img(src);
+				}
+			},
+			fail(err) {
+				uni.openSetting({
+					success(settingdata) {
+						console.log(settingdata)
+						if (settingdata.authSetting['scope.writePhotosAlbum']) {
+							self.save_img(src);
+						} else {
+							uni.showToast({
+								title: '请授权后再操作',
+								coin: 'none'
+							})
+						}
+					}
+				})
+			}
+		})
+	},
+	save_img(src) {
+		const self = this;
+		// let {
+		// 	range_one,
+		// 	range_index,
+		// 	current
+		// } = this.data;
+		uni.showLoading({
+			title: '保存中',
+		})
+		uni.getImageInfo({
+			src,
+			success(res) {
+				console.log(res)
+				// console.log(res.height)
+				uni.saveImageToPhotosAlbum({
+					filePath: res.path,
+					success: function(data) {
+						uni.hideLoading();
+						uni.showToast({
+							title: '保存成功',
+							icon: 'success',
+							duration: 2000
+						})
+					},
+					fail: function(err) {
+						console.log(err);
+						uni.hideLoading();
+						if (err.errMsg === "saveImageToPhotosAlbum:fail auth deny") {
+							console.log("当初用户拒绝，再次发起授权")
+							uni.openSetting({
+								success(settingdata) {
+									console.log(settingdata)
+									if (settingdata.authSetting['scope.writePhotosAlbum']) {
+										console.log('获取权限成功，给出再次点击图片保存到相册的提示。')
+									} else {
+										console.log('获取权限失败，给出不给权限就无法正常使用的提示')
+									}
+								}
+							})
+						}
+					},
+					complete(res) {
+						console.log(res);
+					}
+				})
+			}
+		})
+
+	},
+
 }
 
 export default sysAPI
